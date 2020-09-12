@@ -1,7 +1,7 @@
 {
   "name": "sourzce",
   "version": "1.0.0",
-  "main": "release.js",
+  "main": "buildRelease.js",
   "license": "MIT",
   "scripts": {
       "buildRelease": "node ."
