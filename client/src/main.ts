@@ -2,21 +2,32 @@ import '@/sass/main.sass';
 import '@/assets/logo.png';
 import { Notyf } from 'notyf';
 import axios from 'axios';
-import "@/assets/manifest.json"
-import {localIP} from './constants.ts'
+import '@/assets/manifest.json';
+import { localIP } from './constants.ts';
 
 /**
  * Adding the service worker (if we can);
  */
-if('serviceWorker' in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register('/sw.js').then(reg => {}).catch(regError => {
-            throw new Error("Service Worker Registration Error: " + regError)
-        })
-    })
+if ('serviceWorker' in navigator) {
+     window.addEventListener('load', () => {
+          navigator.serviceWorker
+               .register('/sw.js')
+               .then((reg) => {})
+               .catch((regError) => {
+                    throw new Error(
+                         'Service Worker Registration Error: ' + regError
+                    );
+               });
+     });
 }
 
 /** Change this to your LAN ip */
+const uploadProgressBar = document.querySelector(
+     '#upload-progress-bar'
+) as HTMLDivElement;
+const uploadProgress = document.querySelector(
+     '#upload-progress'
+) as HTMLProgressElement;
 const fileInput = document.querySelector('#file-upload')! as HTMLInputElement;
 const fileLabel = document.querySelector('#file-label')! as HTMLLabelElement;
 const filePreview = document.querySelector('#file-preview')! as HTMLDivElement;
@@ -102,6 +113,7 @@ function renderPreview() {
 /** Button Code */
 const uploadBtn = document.querySelector('#upload')! as HTMLButtonElement;
 const clearAllBtn = document.querySelector('#clear-all')! as HTMLButtonElement;
+let uploading = false;
 
 uploadBtn.addEventListener('click', (event) => {
      const xhr = new XMLHttpRequest();
@@ -113,12 +125,17 @@ uploadBtn.addEventListener('click', (event) => {
           }
           xhr.open('POST', local('/upload'));
           xhr.send(formData);
+
+          enableUploadBar();
+
           xhr.onreadystatechange = (event) => {
                if (xhr.readyState === XMLHttpRequest.DONE) {
                     const status = xhr.status;
                     if (status === 0 || (status >= 200 && status < 300)) {
+                         disableUploadBar('success');
                          clearFiles();
                     } else {
+                         disableUploadBar('error');
                          if (status === 400) {
                               notifs.error(
                                    'ERROR<br>no files uploaded, select some files first!'
@@ -135,6 +152,32 @@ uploadBtn.addEventListener('click', (event) => {
           notifs.error('ERROR<br>no files uploaded, select some files first!');
      }
 });
+function enableUploadBar() {
+     uploadProgressBar.classList.remove('hidden');
+     uploadProgress.classList.add('uploading');
+     uploading = true;
+     uploadProgress.value = 0;
+     uploadProgress.innerText = "Uploading. . ."
+}
+let disableCount = 0;
+function disableUploadBar(statusClass: string) {
+     uploadProgressBar.classList.add('hidden');
+     uploadProgress.classList.add(statusClass);
+     uploadProgress.classList.remove('uploading');
+     disableCount++;
+     setTimeout(() => {
+          if (disableCount === 1) uploadProgress.classList.remove(statusClass);
+          disableCount--;
+     }, 500);
+     uploading = false;
+     uploadProgress.value = 0;
+     uploadProgress.innerText = ""
+}
+function updateUploadBar(progress: number) {
+     if (uploading) {
+          uploadProgress.value = progress;
+     }
+}
 function local(route: string): string {
      return baseUrl + route;
 }
