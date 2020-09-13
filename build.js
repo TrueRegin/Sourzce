@@ -106,7 +106,7 @@ function initAndCleanForRelease() {
  * @param {boolean} build
  */
 function updateServerClient(build) {
-     if (build) execSync('yarn build', { cwd: './client' });
+     if (build) execSync('yarn build', { cwd: resolve(__dirname, 'client') });
      deleteFolderContents('./server/client');
      copyFolderContents(
           resolve(__dirname, 'client/dist'),
@@ -122,7 +122,7 @@ function buildRelease() {
           resolve(__dirname, 'client/dist'),
           resolve(__dirname, 'release/client')
      );
-     execSync('yarn build', { cwd: './server' });
+     execSync('yarn build', { cwd: resolve(__dirname, 'server') });
      copyFolderContents(
           resolve(__dirname, 'server/dist'),
           resolve(__dirname, 'release/dist')

@@ -61,6 +61,7 @@ html
 
 #controls
     display: flex
+    flex-wrap: wrap
     justify-content: space-evenly
     align-items: center
     padding: 20px
@@ -77,11 +78,41 @@ html
             button
                 transform: translateY(-10px)
 
+    #upload-progress-bar
+        flex: 1 1 100%
+        height: 20px
+        background: #224
+        border-radius: 1000px
+        overflow: hidden
+        transition: background 170ms, width 120ms, height 1000ms
+
+        &.hidden
+            // height: 0
+
+        #upload-progress
+            height: 100%
+            width: 100%
+            background: #fff
+            color: #0000
+            transition: background 170ms, width 120ms, height 1000ms, color 30ms
+            display: grid
+            justify-content: center
+            align-content: center
+
+            &.error
+                background: #f37
+            &.success
+                background: #3c7
+            &.uploading
+                color: #fff
+            
+
     button
         border-radius: 5px
         box-shadow: 0 6px 12px #0005
         box-sizing: border-box
         border: 2px solid
+        margin: 20px 0
         font-size: 20px
         flex: 1 1 auto
         padding: 20px
