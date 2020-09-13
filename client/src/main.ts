@@ -1,24 +1,34 @@
 import '@/sass/main.sass';
 import '@/assets/logo.png';
 import { Notyf } from 'notyf';
+import axios from 'axios';
+import {localIP} from './constants.ts'
 
+/** Change this to your LAN ip */
 const fileInput = document.querySelector('#file-upload')! as HTMLInputElement;
 const fileLabel = document.querySelector('#file-label')! as HTMLLabelElement;
 const filePreview = document.querySelector('#file-preview')! as HTMLDivElement;
-const baseUrl = 'http://192.168.1.155:8081';
+let baseUrl: string | undefined = undefined;
+axios.get('/SERVER_IP')
+     .then((res) => {
+          if (res.data && typeof res.data === 'string') baseUrl = '';
+     })
+     .catch((err) => {});
+if (typeof baseUrl !== 'string') baseUrl = localIP;
+
 const uploadText = '<i class="fas fa-upload"></i>\nUpload';
-document.querySelectorAll('button').forEach(button => {
-    button.addEventListener('click', (event) => {
-        button.focus();
-        button.blur();
-    })
-})
-fileLabel.addEventListener('keypress', (event) => { 
-    if(event.keyCode === 13 ) {
-        console.log("HEY")
-        fileInput.click();
-    }
-})
+document.querySelectorAll('button').forEach((button) => {
+     button.addEventListener('click', (event) => {
+          button.focus();
+          button.blur();
+     });
+});
+fileLabel.addEventListener('keypress', (event) => {
+     if (event.keyCode === 13) {
+          console.log('HEY');
+          fileInput.click();
+     }
+});
 
 const notifs = new Notyf({
      dismissible: true,
@@ -126,8 +136,8 @@ clearAllBtn.addEventListener('click', (event) => {
 
 function clearFiles() {
      files = [];
-     fileInput.value = "";
-    notifs.dismissAll();
+     fileInput.value = '';
+     notifs.dismissAll();
      renderPreview();
 }
 

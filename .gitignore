@@ -1,2 +1,5 @@
 release
 **/node_modules
+**/*.zip
+**/public/images/*.*
+**/public/uploads/*.*

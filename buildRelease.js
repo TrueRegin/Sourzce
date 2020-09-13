@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { join, resolve } = require('path');
+const { execSync, exec } = require('child_process');
 const pathToRelease = '/release';
 
 /**
@@ -70,29 +71,42 @@ function copyFolderContents(targetPath, outputPath) {
      }
 }
 
-function initAndCleanRelease() {
-     if (!fs.existsSync(join(__dirname, pathToRelease)))
+function initAndCleanForRelease() {
+    if (!fs.existsSync(join(__dirname, pathToRelease)))
           fs.mkdir(join(__dirname, pathToRelease), (err) => {
                if (err) console.log('Directory Create Error', err);
           });
-     else deleteFolderContents(join(__dirname, pathToRelease));
+    else deleteFolderContents(join(__dirname, pathToRelease));
+    if(!fs.existsSync(join(__dirname, "client")) || !fs.existsSync(join(__dirname, "server")))
+          throw new Error("client or server folder doesn't exist inside of your project, WHAT THE HECK HAPPENED?!?!?!")
+    else {
+        deleteFolderContents("./public/dist")
+        deleteFolderContents("./server/dist")
+    }
 }
 
-initAndCleanRelease();
-/**
- * Copies the client DIST, server DIST, and creates
- * the public folders for the server
- */
+initAndCleanForRelease();
+// /**
+//  * Copies the client DIST, server DIST, and creates
+//  * the public folders for the server
+//  */
+
 copyFolderContents(
      resolve(__dirname, 'server/dist'),
      resolve(__dirname, 'release/dist')
 );
 copyFolderContents(
-    resolve(__dirname, 'client/dist'),
-    resolve(__dirname, 'release/client')
-)
-fs.mkdirSync(resolve(__dirname, 'release/public'))
-fs.mkdirSync(resolve(__dirname, 'release/public/images'))
-fs.mkdirSync(resolve(__dirname, 'release/public/uploads'))
-fs.copyFileSync(resolve(__dirname, 'server/package.json'), resolve(__dirname, 'release/package.json'))
-fs.copyFileSync(resolve(__dirname, 'README.md'), resolve(__dirname, 'release/README.md'))
+     resolve(__dirname, 'client/dist'),
+     resolve(__dirname, 'release/client')
+);
+fs.mkdirSync(resolve(__dirname, 'release/public'));
+fs.mkdirSync(resolve(__dirname, 'release/public/images'));
+fs.mkdirSync(resolve(__dirname, 'release/public/uploads'));
+fs.copyFileSync(
+     resolve(__dirname, 'server/package.json'),
+     resolve(__dirname, 'release/package.json')
+);
+fs.copyFileSync(
+     resolve(__dirname, 'README.md'),
+     resolve(__dirname, 'release/README.md')
+);
