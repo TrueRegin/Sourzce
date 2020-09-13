@@ -1,0 +1,15 @@
+{
+    "name": "Sourzce Personal File Uploads",
+    "short_name": "Sourzce",
+    "description":
+         "Upload files directly to your computer from other devices in the blink of an eye. Designed for LAN networks only.",
+    "background_color": "#5555ff",
+    "theme_color": "#222233",
+    "crossorigin": "use-credentials",
+    "icons": [
+         {
+              "src": "src/assets/logo.png",
+              "sizes": [96, 128, 192]
+         }
+    ]
+}

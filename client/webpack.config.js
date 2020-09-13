@@ -1,7 +1,33 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
+const WorkboxPlugin = require('workbox-webpack-plugin');
+const Manifest = require('./manifest.json');
+
+const ServiceWorker = new WorkboxPlugin.GenerateSW({
+     exclude: [/\.(?:png|jpg|jpeg|svg)$/],
+     swDest: 'sw.js',
+     runtimeCaching: [
+          {
+               // Match any request that ends with .png, .jpg, .jpeg or .svg.
+               urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
+
+               // Apply a cache-first strategy.
+               handler: 'CacheFirst',
+
+               options: {
+                    // Use a custom cache name.
+                    cacheName: 'images',
+
+                    // Only cache 10 images.
+                    expiration: {
+                         maxEntries: 10,
+                    },
+               },
+          },
+     ],
+});
 
 /** @type {import('webpack').Configuration} */
 const config = {
@@ -19,6 +45,7 @@ const config = {
           chunkFilename: '[name].[hash].js',
      },
      plugins: [
+          ServiceWorker,
           new MiniCssExtractPlugin({
                filename: 'styles/[name].css',
                chunkFilename: '[id].css',
@@ -27,6 +54,7 @@ const config = {
                template: path.join(__dirname, 'src/pages/index.html'),
                filename: 'index.html',
           }),
+          new WebpackPwaManifest(Manifest),
      ],
      module: {
           rules: [
@@ -50,15 +78,15 @@ const config = {
                     },
                },
                {
-                test: /\.(eot|ttf|woff2?)$/,
-                use: {
-                     loader: 'file-loader',
-                     options: {
-                          name: 'fonts/[name].[ext]',
-                          outputPath: 'assets',
-                     },
-                },
-           }
+                    test: /\.(eot|ttf|woff2?)$/,
+                    use: {
+                         loader: 'file-loader',
+                         options: {
+                              name: 'fonts/[name].[ext]',
+                              outputPath: 'assets',
+                         },
+                    },
+               },
           ],
      },
      resolve: {

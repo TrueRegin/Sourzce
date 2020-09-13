@@ -1,0 +1,27 @@
+{
+  "icons": [
+    {
+      "src": "/icon_192x192.236a8d4aaae6cfa801ad35a78a619673.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon_128x128.458825b222d1644ac6d4ae7e1411a78e.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon_96x96.8a082ccd5e16fb6f53927c8fe22aea1a.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ],
+  "name": "Sourzce Personal File Uploads",
+  "short_name": "Sourzce",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": ".",
+  "description": "Upload files directly to your computer from other devices in the blink of an eye. Designed for LAN networks only.",
+  "background_color": "#5555ff",
+  "theme_color": "#222233"
+}

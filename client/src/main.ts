@@ -2,7 +2,19 @@ import '@/sass/main.sass';
 import '@/assets/logo.png';
 import { Notyf } from 'notyf';
 import axios from 'axios';
+import "@/assets/manifest.json"
 import {localIP} from './constants.ts'
+
+/**
+ * Adding the service worker (if we can);
+ */
+if('serviceWorker' in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register('/sw.js').then(reg => {}).catch(regError => {
+            throw new Error("Service Worker Registration Error: " + regError)
+        })
+    })
+}
 
 /** Change this to your LAN ip */
 const fileInput = document.querySelector('#file-upload')! as HTMLInputElement;
