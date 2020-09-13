@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { join, resolve } = require('path');
 const { execSync, exec } = require('child_process');
+const { argv } = require('process');
 const pathToRelease = '/release';
 
 /**
@@ -58,7 +59,6 @@ function copyFolderContents(targetPath, outputPath) {
                fs.mkdirSync(outputPath);
 
           fs.readdirSync(targetPath, {}).forEach((file) => {
-               console.log(file);
                const targetFilePath = resolve(targetPath, file);
                const outputFilePath = resolve(outputPath, file);
 
@@ -71,42 +71,83 @@ function copyFolderContents(targetPath, outputPath) {
      }
 }
 
-function initAndCleanForRelease() {
-    if (!fs.existsSync(join(__dirname, pathToRelease)))
-          fs.mkdir(join(__dirname, pathToRelease), (err) => {
-               if (err) console.log('Directory Create Error', err);
-          });
-    else deleteFolderContents(join(__dirname, pathToRelease));
-    if(!fs.existsSync(join(__dirname, "client")) || !fs.existsSync(join(__dirname, "server")))
-          throw new Error("client or server folder doesn't exist inside of your project, WHAT THE HECK HAPPENED?!?!?!")
-    else {
-        deleteFolderContents("./public/dist")
-        deleteFolderContents("./server/dist")
-    }
+/**
+ *
+ * @param {string} path
+ * @param {string} contents
+ */
+function createFile(path, contents) {
+     let filestream = fs.createWriteStream(path);
+     filestream.write(contents);
+     filestream.close();
 }
 
-initAndCleanForRelease();
-// /**
-//  * Copies the client DIST, server DIST, and creates
-//  * the public folders for the server
-//  */
+function initAndCleanForRelease() {
+     if (!fs.existsSync(join(__dirname, pathToRelease)))
+          fs.mkdir(join(__dirname, pathToRelease), (err) => {
+               if (err) console.error('Directory Create Error', err);
+          });
+     else deleteFolderContents(join(__dirname, pathToRelease));
+     if (
+          !fs.existsSync(join(__dirname, 'client')) ||
+          !fs.existsSync(join(__dirname, 'server'))
+     )
+          throw new Error(
+               "client or server folder doesn't exist inside of your project, WHAT THE HECK HAPPENED?!?!?!"
+          );
+     else {
+          deleteFolderContents('./public/dist');
+          deleteFolderContents('./server/dist');
+     }
+}
 
-copyFolderContents(
-     resolve(__dirname, 'server/dist'),
-     resolve(__dirname, 'release/dist')
-);
-copyFolderContents(
-     resolve(__dirname, 'client/dist'),
-     resolve(__dirname, 'release/client')
-);
-fs.mkdirSync(resolve(__dirname, 'release/public'));
-fs.mkdirSync(resolve(__dirname, 'release/public/images'));
-fs.mkdirSync(resolve(__dirname, 'release/public/uploads'));
-fs.copyFileSync(
-     resolve(__dirname, 'server/package.json'),
-     resolve(__dirname, 'release/package.json')
-);
-fs.copyFileSync(
-     resolve(__dirname, 'README.md'),
-     resolve(__dirname, 'release/README.md')
-);
+/**
+ *
+ * @param {boolean} build
+ */
+function updateServerClient(build) {
+     if (build) execSync('yarn build', { cwd: './client' });
+     deleteFolderContents('./server/client');
+     copyFolderContents(
+          resolve(__dirname, 'client/dist'),
+          resolve(__dirname, 'server/client')
+     );
+}
+
+function buildRelease() {
+     initAndCleanForRelease();
+
+     updateServerClient(true);
+     copyFolderContents(
+          resolve(__dirname, 'client/dist'),
+          resolve(__dirname, 'release/client')
+     );
+     execSync('yarn build', { cwd: './server' });
+     copyFolderContents(
+          resolve(__dirname, 'server/dist'),
+          resolve(__dirname, 'release/dist')
+     );
+     fs.mkdirSync(resolve(__dirname, 'release/public'));
+     fs.mkdirSync(resolve(__dirname, 'release/public/images'));
+     fs.mkdirSync(resolve(__dirname, 'release/public/uploads'));
+     fs.copyFileSync(
+          resolve(__dirname, 'server/package.json'),
+          resolve(__dirname, 'release/package.json')
+     );
+     fs.copyFileSync(
+          resolve(__dirname, 'README.md'),
+          resolve(__dirname, 'release/README.md')
+     );
+
+     createFile('./release/install.bat', 'npm install');
+     createFile('./release/run.bat', 'npm run start:prod');
+}
+
+function compileDev() {
+     updateServerClient();
+}
+
+argv.forEach((arg) => {
+     if (arg === '--release') buildRelease();
+     if (arg === '--dev') compileDev();
+});

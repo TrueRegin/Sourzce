@@ -23,3 +23,5 @@ If we ran the server with the below .env file we would be able to connect to the
 If there are features you want to add you can contribute to the source code, it's a very barebones app with very little learning to do(assuming you know Typescript & Express).
 
 Run `yarn buildRelease` or `npm run buildRelease` to build the server + client into a release folder that you can give to other people who want to run your modified version of the app.
+
+Run `yarn client` or `npm run client` to watch the client dist folder, while this command is running, if you build the client, it will automatically replace the client on the server to save you from copying and pasting it.

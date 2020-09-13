@@ -1,9 +1,13 @@
 {
   "name": "sourzce",
   "version": "1.0.0",
-  "main": "buildRelease.js",
+  "main": "build.js",
   "license": "MIT",
   "scripts": {
-      "buildRelease": "node ."
+    "buildRelease": "node ./build.js --release",
+    "client": "nodemon --watch client/dist/ ./build.js --dev"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
