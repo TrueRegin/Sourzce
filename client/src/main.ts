@@ -3,7 +3,7 @@ import '@/assets/logo.png';
 import { Notyf } from 'notyf';
 import axios from 'axios';
 import '@/assets/manifest.json';
-import { localIP } from './constants.ts';
+import { DEV_IP, EXISTS_ROUTE } from '@C';
 
 /**
  * Adding the service worker (if we can);
@@ -32,12 +32,14 @@ const fileInput = document.querySelector('#file-upload')! as HTMLInputElement;
 const fileLabel = document.querySelector('#file-label')! as HTMLLabelElement;
 const filePreview = document.querySelector('#file-preview')! as HTMLDivElement;
 let baseUrl: string | undefined = undefined;
-axios.get('/SERVER_IP')
+axios.get(EXISTS_ROUTE)
      .then((res) => {
-          if (res.data && typeof res.data === 'string') baseUrl = '';
+          if (res.data && res.data.exists === true) baseUrl = '';
+          baseUrl = DEV_IP;
      })
-     .catch((err) => {});
-if (typeof baseUrl !== 'string') baseUrl = localIP;
+     .catch((err) => {
+          baseUrl = DEV_IP;
+     });
 
 const uploadText = '<i class="fas fa-upload"></i>\nUpload';
 document.querySelectorAll('button').forEach((button) => {
@@ -157,7 +159,7 @@ function enableUploadBar() {
      uploadProgress.classList.add('uploading');
      uploading = true;
      uploadProgress.value = 0;
-     uploadProgress.innerText = "Uploading. . ."
+     uploadProgress.innerText = 'Uploading. . .';
 }
 let disableCount = 0;
 function disableUploadBar(statusClass: string) {
@@ -171,7 +173,7 @@ function disableUploadBar(statusClass: string) {
      }, 500);
      uploading = false;
      uploadProgress.value = 0;
-     uploadProgress.innerText = ""
+     uploadProgress.innerText = '';
 }
 function updateUploadBar(progress: number) {
      if (uploading) {

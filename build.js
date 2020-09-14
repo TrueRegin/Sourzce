@@ -103,10 +103,10 @@ function initAndCleanForRelease() {
 
 /**
  *
- * @param {boolean} build
+ * @param {boolean} buildRelease
  */
-function updateServerClient(build) {
-     if (build) execSync('yarn build', { cwd: resolve(__dirname, 'client') });
+function updateServerClient(buildRelease) {
+     if (buildRelease) execSync('yarn build', { cwd: resolve(__dirname, 'client') });
      deleteFolderContents('./server/client');
      copyFolderContents(
           resolve(__dirname, 'client/dist'),
@@ -139,7 +139,7 @@ function buildRelease() {
           resolve(__dirname, 'release/README.md')
      );
 
-     createFile('./release/install.bat', 'npm install');
+     createFile('./release/install.bat', 'npm install --only=prod');
      createFile('./release/run.bat', 'npm run start:prod');
 }
 

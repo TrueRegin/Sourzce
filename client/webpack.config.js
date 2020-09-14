@@ -90,7 +90,10 @@ const config = {
           ],
      },
      resolve: {
-          alias: { '@': path.resolve(__dirname, 'src') },
+          alias: {
+               '@': path.resolve(__dirname, 'src'),
+               '@C': path.resolve(__dirname, '..', 'server/src/config.ts'),
+          },
      },
 };
 

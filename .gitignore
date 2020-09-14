@@ -3,3 +3,5 @@ release
 **/*.zip
 **/public/images/*.*
 **/public/uploads/*.*
+**/client/dist
+**/server/dist
