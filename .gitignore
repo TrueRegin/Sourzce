@@ -1,7 +1,10 @@
 release
 **/node_modules
+**/client/dist/*.*
+**/server/dist/*.*
+**/server/client/*.*
 **/*.zip
+**/*.rar
 **/public/images/*.*
 **/public/uploads/*.*
-**/client/dist
-**/server/dist
+**/.env

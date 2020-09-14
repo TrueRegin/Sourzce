@@ -1,27 +1,59 @@
+<span style='font-size: 25px; color: #f36; font-weight: bold'>NOTE [Install NodeJS](https://nodejs.org/en/) if you want to run a Sourzce server</span>
+
 # Sourzce
-Sourzce is a NestJS personal home server designed to be hosted on LAN
-You can upload files via connecting to a LAN ip on 192.168.1.XXX (You replace the 3 X's)
+A personal home server for uploading files to one computer. Host a server on a computer and connect from any device on your wifi and upload files directly to the host computer.
 
-## Setup / Configuration
-#### ***1.*** To setup you need to get your devices LAN ip, to do this on windows open up the command prompt and type in `ipconfig`
+<hr style="background: #c4882f">
 
-***(You want the IPv4 address)***
-![](https://user-images.githubusercontent.com/36866793/92984774-c403eb00-f47a-11ea-95ac-ce49b258bc0b.png)
+## <span style="color: #fa3; font-weight: bold; text-decoration: underline">Setup for the average user 📦</span>
+There are 2 window `batch` files inside of the release folder, if you are on linux/OSX just open them and paste the scripts into the shell, otherwise run them on windows.
 
-<hr>
+First run `install.bat`
+Next run `run.bat` this loads the server and gives you an IP to connect to, this IP is unique to the device the server is being run on.
 
-#### ***2.*** Create a .env file inside the release, this is where you will set server config info.
-You'll want to set ***two*** options for now.
-- SERVER_IP this is the IP you'll be hosting the server on and from which you can connect
-- PORT this is the port on that server that the server will take requests from
+### <span style="color: #fa3;">Where are my files uploaded?</span>
+Any files uploaded to the Sourzce server will be located under `public/images` or `public/uploads` depending on what the file type was. `.jpg, .jpeg & .png` files will appear under images and anything else will be under uploads.
 
-If we ran the server with the below .env file we would be able to connect to the file upload app at [http://192.168.1.XXX:5000]()
+<hr style="background: #2a9d8a">
 
-![image](https://user-images.githubusercontent.com/36866793/92984855-7cca2a00-f47b-11ea-8f1b-cd6d81de3724.png)
+## <span style='color: #3da; font-weight: bold; text-decoration: underline'>Setup up for Developers 🔧</span>
+1. Clone this repository
+2. run `npm install` or `yarn install`
+3. run `npm run build client` or `yarn build client`
 
-## Contributing
-If there are features you want to add you can contribute to the source code, it's a very barebones app with very little learning to do(assuming you know Typescript & Express).
+It's as easy as 1 2 3
 
-Run `yarn buildRelease` or `npm run buildRelease` to build the server + client into a release folder that you can give to other people who want to run your modified version of the app.
+<hr style='background: #7463a6'>
 
-Run `yarn client` or `npm run client` to watch the client dist folder, while this command is running, if you build the client, it will automatically replace the client on the server to save you from copying and pasting it.
+## <span style="color: #a463e6; font-weight: bold; text-decoration: underline">Building a release version 🏭</span>
+Run the below command script
+
+`npm run build release` OR `yarn build release` (If you have [Yarn](https://classic.yarnpkg.com/en/docs/install#windows-stable))
+
+This will clear your current `release` folder and copy all the necessary files for you to use in a release.
+This `release` folder is intended to be a lightweight setup of Sourzce and as such it has none of the developer dependencies.
+
+<hr style="background: #a84f28">
+
+## <span style="color: #ff8d36; font-weight: bold; text-decoration: underline">Developing Sourzce</span>
+> This development readme is far from complete I may update it in the future but the best way to see how Sourzce works is to checkout the server and clients respectively and see the login in them. <br> You'll need to have a strong basis in **Webpack**, **Typescript**, and **Express** and be familiar with **NestJS** to see how everything works.
+
+Developing with Sourzce consists of 2 components, `the client`, and `the server`.
+
+You run the client by going into `./client` and running the `dev` script.
+
+You build the client by going into `./client` and running the `build` script.
+
+You run the server by going into `./server` and running the `start:dev` script.
+
+You build the server by going into `./server` and running the `build` script.
+
+### <span style="color: #ff8d36">Client → Server</span>
+The client sends 2 different requests to the server
+
+1. `/SERVER_EXISTS` checks if the server exists, if the server has this route it should return.
+```json
+{exists: true}
+```
+
+2. `/upload` is the route you upload files to, it handles the file uploading on the server using Multer.

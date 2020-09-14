@@ -4,8 +4,11 @@
   "main": "build.js",
   "license": "MIT",
   "scripts": {
-    "buildRelease": "node ./build.js --release",
-    "client": "nodemon --watch client/dist/ ./build.js --dev"
+    "build": "node ./build.js",
+    "client": "node ./build.js watch",
+    "build:release": "node ./build.js release",
+    "build:client": "node ./build.js client",
+    "client:watch": "node ./build.js watch"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

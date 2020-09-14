@@ -96,7 +96,7 @@ function initAndCleanForRelease() {
                "client or server folder doesn't exist inside of your project, WHAT THE HECK HAPPENED?!?!?!"
           );
      else {
-          deleteFolderContents('./public/dist');
+          deleteFolderContents('./client/dist');
           deleteFolderContents('./server/dist');
      }
 }
@@ -106,7 +106,8 @@ function initAndCleanForRelease() {
  * @param {boolean} buildRelease
  */
 function updateServerClient(buildRelease) {
-     if (buildRelease) execSync('yarn build', { cwd: resolve(__dirname, 'client') });
+     if (buildRelease)
+          execSync('yarn build', { cwd: resolve(__dirname, 'client') });
      deleteFolderContents('./server/client');
      copyFolderContents(
           resolve(__dirname, 'client/dist'),
@@ -143,11 +144,12 @@ function buildRelease() {
      createFile('./release/run.bat', 'npm run start:prod');
 }
 
-function compileDev() {
-     updateServerClient();
+function compileDev(buildClient) {
+     updateServerClient(buildClient);
 }
 
 argv.forEach((arg) => {
-     if (arg === '--release') buildRelease();
-     if (arg === '--dev') compileDev();
+     if (arg === 'release') buildRelease();
+     else if (arg === 'client') compileDev(true);
+     else if (arg === 'watch') compileDev();
 });

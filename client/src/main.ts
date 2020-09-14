@@ -35,7 +35,7 @@ let baseUrl: string | undefined = undefined;
 axios.get(EXISTS_ROUTE)
      .then((res) => {
           if (res.data && res.data.exists === true) baseUrl = '';
-          baseUrl = DEV_IP;
+          else baseUrl = DEV_IP;
      })
      .catch((err) => {
           baseUrl = DEV_IP;
