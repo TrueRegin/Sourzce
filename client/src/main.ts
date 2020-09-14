@@ -133,18 +133,24 @@ uploadBtn.addEventListener('click', (event) => {
           xhr.onreadystatechange = (event) => {
                if (xhr.readyState === XMLHttpRequest.DONE) {
                     const status = xhr.status;
-                    if (status === 0 || (status >= 200 && status < 300)) {
-                         disableUploadBar('success');
-                         clearFiles();
+                    if (status === 0) {
+                        disableUploadBar('error');
+                        notifs.error("ERROR<br>Server request timed out, is the Sourzce server running?")
+                    } else if (status >= 200 && status < 300) {
+                        disableUploadBar('success');
+                        const uploadCount = files.length
+                        clearFiles();
+                        if(uploadCount <= 1) notifs.success(`<strong>UPLOAD COMPLETE</strong><br>${uploadCount} file successfully uploaded!`)
+                        else notifs.success(`<strong>UPLOAD COMPLETE</strong><br>${uploadCount} files successfully uploaded!`)
                     } else {
                          disableUploadBar('error');
                          if (status === 400) {
                               notifs.error(
-                                   'ERROR<br>no files uploaded, select some files first!'
+                                   '<strong>ERROR</strong><br>no files uploaded, select some files first!'
                               );
                          } else {
                               notifs.error(
-                                   'An error occured while uploading files!'
+                                   '<strong>ERROR</strong><br>An error occured while uploading files!'
                               );
                          }
                     }
