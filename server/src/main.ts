@@ -5,6 +5,7 @@ import { join } from 'path';
 import chalk = require('chalk');
 import os = require('os');
 import { DFT_PORT } from './config';
+import { createMissingFolders } from './init.files';
 
 function getLanData() {
     const nets = os.networkInterfaces();
@@ -81,4 +82,5 @@ async function bootstrap() {
         );
     }
 }
+createMissingFolders();
 bootstrap();

@@ -1,0 +1,82 @@
+#nav-wrapper
+    display: grid
+    width: 100%
+
+// The pink nav button
+#open-nav
+    width: 100%
+    height: 100%
+    font-size: 2em
+    font-weight: boldt
+    background: #f3a
+    color: #fff
+    border-radius: 8px 0 0 8px
+
+    &:hover
+        background: #cf1e85
+
+    &:focus
+        color: #f3a
+        background: #335
+    
+
+#nav > #close-nav
+    position: sticky
+    top: 0
+    display: flex
+    justify-content: center
+    align-items: center
+    background: #fff
+    color: #f3a
+    outline: none
+    cursor: pointer
+
+    &:hover
+        color: #fff
+        background: #f3a
+
+    &:focus
+        color: #fff
+        background: #f3a
+
+#nav-links
+    $nav-t: 120ms
+    position: fixed
+    top: 0
+    left: 0
+    z-index: 100
+    width: 100%
+    height: 100%
+    background: #333
+    display: grid
+    grid-template-rows: 1fr $header-height
+
+    // ! Animation
+    transition: transform $nav-t ease-out, opacity $nav-t ease-out
+    transform: translateY($link-height)
+    transform-origin: 150% 50%
+
+    &.hidden
+        transform: translateY(100%)
+        opacity: 0
+
+// TODO: Need to redesign nav to become the width between the
+// TODO: header and the bottom of the screen
+
+// TODO: Nav doesn't have padding on the bottom when you have to scroll 😩
+nav#nav
+    // # Position
+    // # Display
+    display: grid
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))
+    grid-auto-rows: $link-height
+    height: 100%
+    gap: 20px
+    // # Box Sizing
+    box-sizing: border-box
+    padding: 20px
+    height: 100%
+
+    // ~ Reactives
+    overflow-y: scroll
+    // ~ Styling

@@ -1,0 +1,37 @@
+#file-input
+    width: max-content
+    padding: 0 30px
+    display: grid
+    user-select: none
+
+    label
+        display: flex
+        justify-content: center
+        align-items: center
+        font-weight: bold
+        cursor: pointer
+        background: #335
+        color: #fff
+        height: 100%
+        width: 100%
+        text-align: center
+        box-sizing: border-box
+        padding: 20px
+        transition: background 200ms
+        outline: none
+
+        &:hover
+            color: #368ff5
+            background: #f8f8ff
+
+        &:focus
+            color: #37e28d
+            background: #fff
+
+    input
+        width: 1
+        height: 1
+        visibility: hidden
+        position: absolute
+        top: -1000px
+        left: -1000px

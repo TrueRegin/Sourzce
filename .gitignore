@@ -1,5 +1,6 @@
 release
 **/node_modules
+**/old-client
 **/client/dist/*.*
 **/server/dist/*.*
 **/server/client/*.*
