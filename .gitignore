@@ -8,4 +8,6 @@ release
 **/*.rar
 **/public/images/*.*
 **/public/uploads/*.*
+**/public/pdf/*.*
+**/public/*
 **/.env
