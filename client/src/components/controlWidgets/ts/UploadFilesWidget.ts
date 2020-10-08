@@ -9,7 +9,7 @@ export default Vue.extend({
     props: {
         uploadRoute: {
             type: String,
-            default: UPLOAD_ROUTES.FILES
+            required: true
         },
         validTypes: {
             type: Array,

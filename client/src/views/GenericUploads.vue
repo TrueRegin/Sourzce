@@ -2,7 +2,7 @@
      <div id="home">
           <Controls>
                <ClearFilesWidget></ClearFilesWidget>
-               <UploadFilesWidget></UploadFilesWidget>
+               <UploadFilesWidget :uploadRoute="uploadRoute"></UploadFilesWidget>
                <DeleteModeWidget></DeleteModeWidget>
                <SelectModeWidget></SelectModeWidget>
           </Controls>
@@ -39,7 +39,7 @@ export default Vue.extend({
         ...mapGetters(['getFilemode'])
     },
     data: () => ({
-        postPath: UPLOAD_ROUTES.FILES
+        uploadRoute: UPLOAD_ROUTES.FILES
     })
 })
 </script>

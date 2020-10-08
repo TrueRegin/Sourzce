@@ -1,8 +1,8 @@
 <template>
     <div id='image-to-pdf'>
          <Controls>
-             <ClearFilesWidget :uploadPath="postPath"></ClearFilesWidget>
-             <UploadFilesWidget :validTypes="validTypes"></UploadFilesWidget>
+             <ClearFilesWidget></ClearFilesWidget>
+             <UploadFilesWidget :uploadRoute="uploadRoute" :validTypes="validTypes"></UploadFilesWidget>
              <DeleteModeWidget></DeleteModeWidget>
              <SelectModeWidget></SelectModeWidget>
          </Controls>
@@ -31,7 +31,7 @@ export default Vue.extend({
         ...mapGetters(['getFilemode'])
     },
     data: () => ({
-        postPath: UPLOAD_ROUTES.PDF,
+        uploadRoute: UPLOAD_ROUTES.PDF,
         validTypes: [
             {
                 test: /image\/.+/,

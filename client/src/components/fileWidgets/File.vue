@@ -36,7 +36,7 @@
                <IconButton @press="$emit('move-down')" icon="upload"
                     >Move Down</IconButton
                >
-               <!-- For future use, rotates an image 90deg -->
+               <!-- For future use, rotates an image 90deg, not needed since pdf library already rotates images -->
                <!-- <IconButton @press="$emit('rotate')" icon="redo-alt"></IconButton> -->
           </div>
      </div>
