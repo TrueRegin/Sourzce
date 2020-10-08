@@ -131,6 +131,8 @@ function buildRelease() {
      fs.mkdirSync(resolve(__dirname, 'release/public'));
      fs.mkdirSync(resolve(__dirname, 'release/public/images'));
      fs.mkdirSync(resolve(__dirname, 'release/public/uploads'));
+     fs.mkdirSync(resolve(__dirname, 'release/public/temp'));
+     fs.mkdirSync(resolve(__dirname, 'release/public/pdf'));
      fs.copyFileSync(
           resolve(__dirname, 'server/package.json'),
           resolve(__dirname, 'release/package.json')
